@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporteGananciaFecha" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="928fd5e0-a6c2-406c-a5b8-b38ade888700">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="fechaInicio" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechaFinal" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select ocupa.fecha_salida,ocupa.fecha_ingreso,habitacion.nom_habitacion
+,habitacion.costo_habitacion
+,(date(fecha_salida)-date(fecha_ingreso)+1)dias from ocupa join habitacion
+on(ocupa.id_habitacion=habitacion.id_habitacion)
+where fecha_salida between $P{fechaInicio} and $P{fechaFinal}]]>
+	</queryString>
+	<field name="fecha_salida" class="java.sql.Date"/>
+	<field name="fecha_ingreso" class="java.sql.Date"/>
+	<field name="nom_habitacion" class="java.lang.String"/>
+	<field name="costo_habitacion" class="java.math.BigDecimal"/>
+	<field name="dias" class="java.lang.Integer"/>
+	<variable name="total" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{costo_habitacion}*$F{dias}]]></variableExpression>
+	</variable>
+	<variable name="totalGanado" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$V{total}]]></variableExpression>
+	</variable>
+	<group name="fecha_salida">
+		<groupExpression><![CDATA[$F{fecha_salida}]]></groupExpression>
+	</group>
+	<group name="fecha_ingreso">
+		<groupExpression><![CDATA[$F{fecha_ingreso}]]></groupExpression>
+	</group>
+	<group name="nom_habitacion">
+		<groupExpression><![CDATA[$F{nom_habitacion}]]></groupExpression>
+	</group>
+	<group name="costo_habitacion">
+		<groupExpression><![CDATA[$F{costo_habitacion}]]></groupExpression>
+	</group>
+	<group name="dias">
+		<groupExpression><![CDATA[$F{dias}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20" uuid="c580cdcf-b147-43ce-82dd-017ec7ed06fa"/>
+				<text><![CDATA[fecha_salida]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="111" y="0" width="100" height="20" uuid="8c448769-c86b-4de5-b07b-e9a48f494952"/>
+				<text><![CDATA[fecha_ingreso]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="229" y="2" width="100" height="20" uuid="8ad90b19-0b28-40c2-996a-ac25f4ef124e"/>
+				<text><![CDATA[nom_habitacion]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="341" y="2" width="100" height="20" uuid="a3dcffb7-119b-4099-94e8-a3cb4e2d203d"/>
+				<text><![CDATA[costo_habitacion]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="453" y="2" width="67" height="20" uuid="39f1a42a-2799-4930-b135-d989fcf3a30d"/>
+				<text><![CDATA[dias]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="20" width="572" height="1" uuid="85638b3e-976c-4867-a26e-80caf9fb5ebd"/>
+			</line>
+			<staticText>
+				<reportElement x="520" y="0" width="52" height="20" uuid="36940f4c-208d-474a-a308-4493af115bf0"/>
+				<text><![CDATA[total]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="100" height="20" uuid="392a1028-9d83-44fc-8c8a-fe8fb7e8f23a"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{fecha_salida}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="111" y="0" width="100" height="20" uuid="457de396-87d2-4362-87a3-eab7f1c34db1"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{fecha_ingreso}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="229" y="0" width="100" height="20" uuid="75070c8b-64a7-4691-875d-b1d938df1b3b"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nom_habitacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="341" y="0" width="100" height="20" uuid="0a7561a4-2cca-466f-8510-579ffad32838"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{costo_habitacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="453" y="0" width="67" height="20" uuid="34bcf3e1-7d6d-42f1-a887-0c8bb33cd976"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{dias}]]></textFieldExpression>
+			</textField>
+			<elementGroup>
+				<textField>
+					<reportElement x="520" y="1" width="52" height="20" uuid="854bfd3a-aab3-4615-a4c3-f84b6ac696ab"/>
+					<textElement verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$V{total}]]></textFieldExpression>
+				</textField>
+			</elementGroup>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="9" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="4" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="34" splitType="Stretch">
+			<textField>
+				<reportElement x="453" y="14" width="100" height="20" uuid="5b279067-1371-4c93-8263-b76cc14eb489"/>
+				<textFieldExpression><![CDATA[$V{totalGanado}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="365" y="14" width="88" height="20" uuid="675d5ee5-7ea9-4b63-9730-b1a438687ab3"/>
+				<text><![CDATA[Total resultante:]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

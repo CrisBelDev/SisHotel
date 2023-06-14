@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporteConsumo" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1e3d33ca-17e3-4b25-a065-139dfd26820c">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#FFE4C4">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#FFE2BF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==0)]]></conditionExpression>
+			<style backcolor="#FFF7EF"/>
+		</conditionalStyle>
+	</style>
+	<subDataset name="Table Dataset 1" uuid="f9334f2f-a99f-4930-9ed5-a1fd1f6cc0db"/>
+	<parameter name="habitacion" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="nombre" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select servicio.nom_servicio,servicio.costo_servicio ,count(servicio.nom_servicio)*requiere.cantidad as valores from requiere join habitacion
+on(requiere.id_habitacion=habitacion.id_habitacion) join servicio
+on(requiere.id_servicio=servicio.id_servicio)
+where habitacion.nom_habitacion=$P{habitacion} group by servicio.nom_servicio,servicio.costo_servicio,requiere.cantidad]]>
+	</queryString>
+	<field name="nom_servicio" class="java.lang.String"/>
+	<field name="costo_servicio" class="java.math.BigDecimal"/>
+	<field name="valores" class="java.lang.Long"/>
+	<variable name="variable1" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{valores}*$F{costo_servicio}]]></variableExpression>
+	</variable>
+	<variable name="variable2" class="java.lang.String"/>
+	<group name="nom_servicio">
+		<groupExpression><![CDATA[$F{nom_servicio}]]></groupExpression>
+	</group>
+	<group name="costo_servicio">
+		<groupExpression><![CDATA[$F{costo_servicio}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="-19" y="0" width="596" height="79" backcolor="#99CCFF" uuid="3c317a89-648e-48d1-a377-86661b7335b8"/>
+			</frame>
+			<staticText>
+				<reportElement x="156" y="14" width="255" height="42" uuid="19a2da15-e094-4b91-8202-994878e6689d"/>
+				<textElement textAlignment="Center">
+					<font size="26"/>
+				</textElement>
+				<text><![CDATA[Reporte de Consumo]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<textField>
+				<reportElement x="140" y="0" width="148" height="20" uuid="bd0adb33-40d8-41fa-b1cd-38252a0b2cac"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{nombre}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="88" y="0" width="52" height="20" uuid="c5a59009-8631-4b68-8789-5cde2ee8422a"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+				<text><![CDATA[Nombre:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="406" y="0" width="76" height="20" uuid="389530b5-9452-4744-9283-d40680bcbdd1"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{habitacion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="344" y="0" width="62" height="20" uuid="e252ea3a-6b7d-4654-82b4-c79900fd1e7e"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+				<text><![CDATA[Habitacion:]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement style="table" mode="Opaque" x="88" y="0" width="100" height="20" uuid="d7e6a93e-5f73-48b9-9b52-1d56d8fc9f93"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="none">
+					<font isBold="true" isItalic="true" isUnderline="false" isStrikeThrough="false"/>
+					<paragraph lineSpacing="Single" leftIndent="5"/>
+				</textElement>
+				<text><![CDATA[Servicio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table" mode="Opaque" x="188" y="0" width="100" height="20" uuid="04c40bc0-4f24-47df-8a58-76a5b3f05314"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="none">
+					<font isBold="true" isItalic="true" isUnderline="false" isStrikeThrough="false"/>
+					<paragraph lineSpacing="Single" leftIndent="5"/>
+				</textElement>
+				<text><![CDATA[Costo Unitario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="table" x="288" y="0" width="118" height="20" uuid="631ca1ab-bef0-431b-a827-6ab7bfac3771"/>
+				<textElement verticalAlignment="Middle">
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<text><![CDATA[Cantidad Consumido]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement style="table" x="88" y="0" width="100" height="20" uuid="49b08b42-f9bc-4814-8c68-7a45f75c3786"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="none">
+					<font isUnderline="false" isStrikeThrough="false"/>
+					<paragraph lineSpacing="Single" leftIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nom_servicio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="table" mode="Opaque" x="188" y="0" width="100" height="20" uuid="bea37100-9e3f-47e3-95d5-a95da0bca6c3"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="none">
+					<font isUnderline="false" isStrikeThrough="false"/>
+					<paragraph lineSpacing="Single" leftIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{costo_servicio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="table" x="288" y="0" width="118" height="20" uuid="6fc197c8-05dc-46ae-a479-c95a8292b34d"/>
+				<textElement verticalAlignment="Middle">
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valores}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch">
+			<elementGroup/>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="163" splitType="Stretch">
+			<textField>
+				<reportElement x="382" y="0" width="100" height="20" uuid="e4e3f065-fca2-4cab-a004-969761d727ac"/>
+				<textElement verticalAlignment="Middle">
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{variable1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="282" y="0" width="100" height="20" uuid="d713a1cf-899d-49fa-a3af-a281a91c47a2"/>
+				<textElement verticalAlignment="Middle">
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<text><![CDATA[Total Consumido:]]></text>
+			</staticText>
+			<break>
+				<reportElement x="0" y="162" width="555" height="1" uuid="3f6a8bce-35c4-4dc6-8d47-a0a2b51a39df"/>
+			</break>
+			<elementGroup>
+				<subreport>
+					<reportElement x="88" y="36" width="200" height="100" uuid="091fbd08-8791-40a2-9355-d4ced891e995"/>
+					<subreportParameter name="cliente">
+						<subreportParameterExpression><![CDATA[$P{nombre}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="valor">
+						<subreportParameterExpression><![CDATA[$V{variable1}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="habitacion">
+						<subreportParameterExpression><![CDATA[$P{habitacion}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["C:\\Users\\HP\\Documents\\NetBeansProjects\\SISHOTEL\\web\\jasper\\dias.jasper"]]></subreportExpression>
+				</subreport>
+			</elementGroup>
+		</band>
+	</summary>
+</jasperReport>
